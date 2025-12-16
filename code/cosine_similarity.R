@@ -1,11 +1,17 @@
 library(dplyr)
 library(tidyr)
 library(lsa)
+library(ggplot2)
 
-raw_data <- read.csv("your_file.csv")
+# Read data
+raw_data <- read.csv("data.csv")
+raw_data <- na.omit(raw_data)
 
+# ===================================================================
+# PART 1: ACROSS MODELS - Average prompters, compare models
+# ===================================================================
 
-# 3. Step 1: Average the Humans (Create the "True Vector")
+# Step 1: Average across prompters for each model-date combination
 model_vectors <- raw_data %>%
    group_by(Date_dec, Model) %>%
    summarise(
@@ -17,47 +23,123 @@ model_vectors <- raw_data %>%
       .groups = "drop"
    )
 
-# 4. Step 2: Calculate Daily Disagreement Score
-final_results <- model_vectors %>%
+# Step 2: Calculate across-model disagreement by day
+across_model_disagreement <- model_vectors %>%
    group_by(Date_dec) %>%
    summarise(
-      # Create a unique list of models for that day
       Disagreement_Score = {
-         # Extract the vectors for the models present on this day
          current_data <- cur_data()
          
-         # We need at least 2 models to compare
          if(nrow(current_data) < 2) {
             NA 
          } else {
-            # Create a matrix of just the numerical scores
-            # Rows = Models, Cols = Dimensions
+            # Matrix: rows = models, cols = dimensions
             mat <- as.matrix(current_data[, c("Equities", "Inflation", "Labor", "Consumer", "Guidance")])
             
-            # Transpose so columns are models (required for lsa::cosine)
+            # Transpose for cosine function (columns = models)
             mat_t <- t(mat)
             
-            # Calculate Cosine Similarity Matrix
+            # Cosine similarity matrix
             sim_matrix <- cosine(mat_t)
             
-            # Convert to Distance (1 - Similarity)
+            # Convert to distance
             dist_matrix <- 1 - sim_matrix
             
-            # Extract unique pairwise distances (lower triangle of matrix)
-            # This gives us the distance between Model A-B, B-C, A-C
+            # Average pairwise distance
             distances <- dist_matrix[lower.tri(dist_matrix)]
-            
-            # Return the average distance
             mean(distances, na.rm = TRUE)
          }
-      }
+      },
+      .groups = "drop"
    )
 
-# 5. View Final Table
-print(final_results)
+# ===================================================================
+# PART 2: WITHIN MODELS - Compare prompters within each model
+# ===================================================================
 
-# Optional: Save to CSV for your chart
-write.csv(final_results, "daily_disagreement_scores.csv", row.names = FALSE)
+# Calculate within-model disagreement (across prompters) - KEEP BY MODEL
+within_model_disagreement <- raw_data %>%
+   group_by(Date_dec, Model) %>%
+   summarise(
+      Disagreement_Score = {
+         current_data <- cur_data()
+         
+         if(nrow(current_data) < 2) {
+            NA 
+         } else {
+            # Matrix: rows = prompters, cols = dimensions
+            mat <- as.matrix(current_data[, c("Equities", "Inflation", "Labor", "Consumer", "Guidance")])
+            
+            # Transpose for cosine function
+            mat_t <- t(mat)
+            
+            # Cosine similarity matrix
+            sim_matrix <- cosine(mat_t)
+            
+            # Convert to distance
+            dist_matrix <- 1 - sim_matrix
+            
+            # Average pairwise distance
+            distances <- dist_matrix[lower.tri(dist_matrix)]
+            mean(distances, na.rm = TRUE)
+         }
+      },
+      .groups = "drop"
+   )
+
+# ===================================================================
+# PRINT RESULTS
+# ===================================================================
+
+cat("\n=== ACROSS MODEL DISAGREEMENT ===\n")
+print(across_model_disagreement)
+
+cat("\n=== WITHIN MODEL DISAGREEMENT (by model and date) ===\n")
+print(within_model_disagreement)
+
+# ===================================================================
+# PLOT 1: ACROSS MODELS
+# ===================================================================
+
+ggplot(across_model_disagreement, aes(x = Date_dec, y = Disagreement_Score)) +
+   geom_line(linewidth = 1, color = "#E63946") +
+   geom_point(size = 3, color = "#E63946") +
+   labs(
+      title = "Across-Model Disagreement Over Time",
+      subtitle = "Cosine Distance Between Models (Averaged Across Prompters)",
+      x = "Date (December)",
+      y = "Average Cosine Distance"
+   ) +
+   theme_minimal(base_size = 12) +
+   theme(
+      plot.title = element_text(face = "bold", size = 14),
+      panel.grid.minor = element_blank()
+   ) +
+   scale_x_continuous(breaks = unique(across_model_disagreement$Date_dec))
+
+# ===================================================================
+# PLOT 2: WITHIN MODELS (SEPARATE LINE FOR EACH MODEL)
+# ===================================================================
+
+ggplot(within_model_disagreement, aes(x = Date_dec, y = Disagreement_Score, 
+                                      color = Model, shape = Model)) +
+   geom_line(linewidth = 1) +
+   geom_point(size = 3) +
+   labs(
+      title = "Within-Model Disagreement Over Time",
+      subtitle = "Cosine Distance Between Prompters (Separate for Each Model)",
+      x = "Date (December)",
+      y = "Average Cosine Distance",
+      color = "Model",
+      shape = "Model"
+   ) +
+   theme_minimal(base_size = 12) +
+   theme(
+      legend.position = "bottom",
+      plot.title = element_text(face = "bold", size = 14),
+      panel.grid.minor = element_blank()
+   ) +
+   scale_x_continuous(breaks = unique(within_model_disagreement$Date_dec))
 
 
 
