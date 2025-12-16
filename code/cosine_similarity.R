@@ -100,6 +100,9 @@ print(within_model_disagreement)
 # ===================================================================
 # PLOT 1: ACROSS MODELS
 # ===================================================================
+# ===================================================================
+# PLOT 1: ACROSS MODELS
+# ===================================================================
 
 ggplot(across_model_disagreement, aes(x = Date_dec, y = Disagreement_Score)) +
    geom_line(linewidth = 1, color = "#E63946") +
@@ -115,7 +118,8 @@ ggplot(across_model_disagreement, aes(x = Date_dec, y = Disagreement_Score)) +
       plot.title = element_text(face = "bold", size = 14),
       panel.grid.minor = element_blank()
    ) +
-   scale_x_continuous(breaks = unique(across_model_disagreement$Date_dec))
+   scale_x_continuous(breaks = unique(across_model_disagreement$Date_dec)) +
+   scale_y_continuous(limits = c(0, 2), breaks = seq(0, 2, 0.5))
 
 # ===================================================================
 # PLOT 2: WITHIN MODELS (SEPARATE LINE FOR EACH MODEL)
@@ -139,7 +143,7 @@ ggplot(within_model_disagreement, aes(x = Date_dec, y = Disagreement_Score,
       plot.title = element_text(face = "bold", size = 14),
       panel.grid.minor = element_blank()
    ) +
-   scale_x_continuous(breaks = unique(within_model_disagreement$Date_dec))
-
+   scale_x_continuous(breaks = unique(within_model_disagreement$Date_dec)) +
+   scale_y_continuous(limits = c(0, 2), breaks = seq(0, 2, 0.5))
 
 
