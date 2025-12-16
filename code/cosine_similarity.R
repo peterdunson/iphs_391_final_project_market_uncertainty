@@ -179,9 +179,9 @@ print(comparison_metrics_filtered)
 
 # Define historical min/max for each metric
 historical_ranges <- list(
-   VIX = c(min = 9, max = 85),  # Using slightly wider than absolute historical
-   Citi = c(min = -100, max = 100),
-   EPU = c(min = 50, max = 600)
+   VIX = c(min = 9.14, max = 82.69),  # Using slightly wider than absolute historical
+   Citi = c(min = -69.7, max = 249.10),
+   EPU = c(min = 10, max = 626)
 )
 
 # Min-max normalization function
