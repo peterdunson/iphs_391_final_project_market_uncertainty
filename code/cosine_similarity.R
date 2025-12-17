@@ -4,8 +4,7 @@ library(lsa)
 library(ggplot2)
 
 # Read data
-raw_data <- read.csv("data/data.csv")
-raw_data <- na.omit(raw_data)
+raw_data <- read.csv("data/llm_response.csv")
 
 comparison_metrics <- read.csv("data/comparison_metrics.csv")
 print(comparison_metrics)

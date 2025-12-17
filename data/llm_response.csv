@@ -26,12 +26,12 @@ Date_dec,Model,Prompter,Equities,Inflation,Labor,Consumer,Guidance
 15,Gemini 3 Pro,Andre,-2,3,-2,0,1
 15,GPT 5.1,Andre,-1,-1,-1,-1,1
 15,Claude Opus 4.5,Andre,-1,-1,-2,-2,0
-16,Gemini 3 Pro,Peter,,,,,
-16,GPT 5.1,Peter,,,,,
-16,Claude Opus 4.5,Peter,,,,,
-16,Gemini 3 Pro,Gwen,,,,,
-16,GPT 5.1,Gwen,,,,,
-16,Claude Opus 4.5,Gwen,,,,,
-16,Gemini 3 Pro,Andre,,,,,
-16,GPT 5.1,Andre,,,,,
-16,Claude Opus 4.5,Andre,,,,,
+16,Gemini 3 Pro,Peter,-2,-2,-3,-1,-1
+16,GPT 5.1,Peter,-1,1,-2,-1,-1
+16,Claude Opus 4.5,Peter,-1,-1,-2,-1,0
+16,Gemini 3 Pro,Gwen,-2,-2,-3,-1,-2
+16,GPT 5.1,Gwen,-1,-2,-1,0,-1
+16,Claude Opus 4.5,Gwen,-1,-2,-2,-2,0
+16,Gemini 3 Pro,Andre,-2,-1,-3,-2,2
+16,GPT 5.1,Andre,-1,2,-1,-1,0
+16,Claude Opus 4.5,Andre,-1,-2,-2,-2,-2
