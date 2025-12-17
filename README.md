@@ -81,4 +81,22 @@ We compare disagreement metrics against:
 
 We compute correlations using **raw, unscaled values**.
 
-## Repository Structure
+## Results Snapshot (from this study)
+- Across-model disagreement dropped sharply after the first sampled day, suggesting convergence in the models’ overall narrative.
+- Across-model disagreement aligned more with policy/news uncertainty (EPU) than with market-implied volatility (VIX).
+- Within-model disagreement differed by model and date, consistent with a model-stability / prompt-sensitivity interpretation.
+
+## Limitations
+- Small sample size (only a few December dates with three responses/day) makes correlations fragile.
+- Discrete integer scoring (-5 to +5) can create outsized swings in cosine-distance disagreement when the dataset is small.
+- Some “disagreement” may reflect differences in cited information inputs/sourcing rather than true economic ambiguity.
+
+## Credits / Contributions
+- **Peter:** data organization + R analysis pipeline (cosine-distance disagreement, viz, correlations), drafted methodology.
+- **Andre:** collected LLM outputs, drafted introduction, benchmark dataset selection/interpretation, references.
+- **Gwen:** interpreted disagreement vs. benchmarks, compared reasoning/info sources, drafted abstract/conclusion/limitations.
+
+## Citation
+If you build on this repo, cite:  
+*Disagreement Among AI Models as a Metric of Economic Uncertainty* (IPHS 391, Kenyon College, Fall 2025)
+
