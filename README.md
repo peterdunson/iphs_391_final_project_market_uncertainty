@@ -22,12 +22,15 @@ All data lives in `data/`.
 ### `data/llm_response.csv`
 Daily sentiment scores output by each model.
 
-**Expected columns (recommended):**
-- `date` (YYYY-MM-DD)
-- `model` (e.g., `claude_opus_4_5`, `gpt_5_1`, `gemini_3_pro`)
-- `rater` (e.g., `R1`, `R2`, `R3`)
-- `equities`, `inflation`, `labor`, `consumer_confidence`, `forward_guidance` (integers in [-5, 5])
-- *(optional but useful)* `notes` or `reasoning_text`
+**Data:**
+- Date_dec
+- Model (e.g., `claude_opus_4_5`, `gpt_5_1`, `gemini_3_pro`)
+- Prompter
+- Equities
+- Inflation
+- Labor
+- Consumer
+- Guidance
 
 ### `data/comparison_metrics.csv`
 Benchmark uncertainty indices (raw, unscaled values recommended).
