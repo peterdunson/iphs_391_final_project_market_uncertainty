@@ -36,10 +36,10 @@ Daily sentiment scores output by each model.
 Benchmark uncertainty indices (raw, unscaled values recommended).
 
 **Expected columns (recommended):**
-- `date` (YYYY-MM-DD)
-- `vix`
-- `epu`
-- `citi_surprise`
+- date
+- `VIX`
+- `EPU`
+- `Citi_Surprise`
 
 ## Prompt
 The prompt used for daily collection is stored in:
